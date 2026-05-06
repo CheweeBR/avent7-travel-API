@@ -26,9 +26,9 @@ export class BookingsController {
   @Get()
   @Auth()
   @ApiOperation({ summary: 'List all bookings' })
-  @ApiQuery({ name: 'itineraryId', required: false })
-  findAll(@Query('itineraryId') itineraryId?: string) {
-    if (itineraryId) return this.bookingsService.findByItinerary(itineraryId);
+  @ApiQuery({ name: 'propostaId', required: false })
+  findAll(@Query('propostaId') propostaId?: string) {
+    if (propostaId) return this.bookingsService.findByProposta(propostaId);
     const agencyId = this.requestContext.getAgencyId();
     return this.bookingsService.findAll(agencyId!);
   }

@@ -6,7 +6,7 @@ export class CreateBookingDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsMongoId()
-  itineraryId?: string;
+  propostaId?: string;
 
   @ApiPropertyOptional()
   @IsOptional()

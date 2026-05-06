@@ -19,7 +19,7 @@ export class BookingMongooseRepository implements IBookingRepository {
     return {
       id: doc._id.toString(),
       agencyId: doc.agencyId?.toString() ?? '',
-      itineraryId: doc.itineraryId?.toString() ?? null,
+      propostaId: doc.propostaId?.toString() ?? null,
       blockId: doc.blockId?.toString() ?? null,
       passengerId: doc.passengerId?.toString() ?? null,
       provider: doc.provider as Provider,
@@ -49,9 +49,9 @@ export class BookingMongooseRepository implements IBookingRepository {
     return docs.map((d) => this.toI(d));
   }
 
-  async findByItinerary(itineraryId: string): Promise<IBooking[]> {
+  async findByProposta(propostaId: string): Promise<IBooking[]> {
     const docs = await this.model
-      .find({ itineraryId: new Types.ObjectId(itineraryId) })
+      .find({ propostaId: new Types.ObjectId(propostaId) })
       .sort({ createdAt: -1 })
       .lean<MongoBkg[]>();
     return docs.map((d) => this.toI(d));
@@ -66,7 +66,7 @@ export class BookingMongooseRepository implements IBookingRepository {
     const created = await this.model.create({
       ...dto,
       agencyId: new Types.ObjectId(dto.agencyId),
-      itineraryId: dto.itineraryId ? new Types.ObjectId(dto.itineraryId) : null,
+      propostaId: dto.propostaId ? new Types.ObjectId(dto.propostaId) : null,
       blockId: dto.blockId ? new Types.ObjectId(dto.blockId) : null,
       passengerId: dto.passengerId ? new Types.ObjectId(dto.passengerId) : null,
     });

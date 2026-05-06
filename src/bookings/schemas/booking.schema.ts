@@ -10,8 +10,8 @@ export class Booking {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Agency', required: true })
   agencyId: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Itinerary', default: null })
-  itineraryId: mongoose.Types.ObjectId | null;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Proposta', default: null })
+  propostaId: mongoose.Types.ObjectId | null;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'ItineraryBlock', default: null })
   blockId: mongoose.Types.ObjectId | null;
@@ -69,6 +69,6 @@ export class Booking {
 
 export const BookingSchema = SchemaFactory.createForClass(Booking);
 BookingSchema.index({ agencyId: 1 });
-BookingSchema.index({ itineraryId: 1 });
+BookingSchema.index({ propostaId: 1 });
 BookingSchema.index({ passengerId: 1 });
 BookingSchema.index({ status: 1 });

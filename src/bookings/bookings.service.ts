@@ -14,8 +14,8 @@ export class BookingsService {
     return this.repo.findAll(agencyId);
   }
 
-  async findByItinerary(itineraryId: string): Promise<IBooking[]> {
-    return this.repo.findByItinerary(itineraryId);
+  async findByProposta(propostaId: string): Promise<IBooking[]> {
+    return this.repo.findByProposta(propostaId);
   }
 
   async findById(id: string): Promise<IBooking> {

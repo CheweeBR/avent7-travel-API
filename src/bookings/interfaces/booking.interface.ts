@@ -3,7 +3,7 @@ import { BookingStatus, Provider } from '../enums/booking.enum';
 export interface IBooking {
   id: string;
   agencyId: string;
-  itineraryId: string | null;
+  propostaId: string | null;
   blockId: string | null;
   passengerId: string | null;
   provider: Provider;

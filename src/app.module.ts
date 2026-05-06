@@ -15,8 +15,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AgenciesModule } from './agencies/agencies.module';
 import { PassengersModule } from './passengers/passengers.module';
-import { ItinerariesModule } from './itineraries/itineraries.module';
-import { ItineraryBlocksModule } from './itinerary-blocks/itinerary-blocks.module';
+import { PropostasModule } from './propostas/propostas.module';
+import { PropostaBlocksModule } from './proposta-blocks/proposta-blocks.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { BriefingsModule } from './briefings/briefings.module';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
@@ -79,8 +79,8 @@ const NODE_ENV = process.env.NODE_ENV ?? 'developer';
     UsersModule,
     AgenciesModule,
     PassengersModule,
-    ItinerariesModule,
-    ItineraryBlocksModule,
+    PropostasModule,
+    PropostaBlocksModule,
     BookingsModule,
     BriefingsModule,
   ],

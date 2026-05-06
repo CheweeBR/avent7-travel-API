@@ -3,7 +3,7 @@ export enum BriefingStatus {
   SENT = 'sent',
   CLIENT_FILLING = 'client_filling',
   COMPLETED = 'completed',
-  ITINERARY_BUILT = 'itinerary_built',
+  PROPOSTA_CRIADA = 'proposta_criada',
   ARCHIVED = 'archived',
 }
 
