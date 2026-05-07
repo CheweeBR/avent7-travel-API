@@ -1,18 +1,17 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsMongoId, IsOptional, IsString } from 'class-validator';
 
-export class CreateItineraryDto {
+export class CreateViagemDto {
+  @ApiProperty()
+  @IsString()
+  title: string;
+
   @ApiProperty()
   @IsMongoId()
-  passengerId: string;
+  clientId: string;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsMongoId()
-  briefingId?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  title?: string;
+  passengerId?: string;
 }

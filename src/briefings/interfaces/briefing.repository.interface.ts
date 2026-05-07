@@ -6,7 +6,7 @@ export const BRIEFING_REPOSITORY = Symbol('IBriefingRepository');
 
 export interface IBriefingRepository {
   findAll(agencyId: string): Promise<IBriefing[]>;
-  findByPassenger(agencyId: string, passengerId: string): Promise<IBriefing[]>;
+  findByViagem(agencyId: string, viagemId: string): Promise<IBriefing[]>;
   findById(id: string): Promise<IBriefing | null>;
   create(dto: CreateBriefingDto & { agencyId: string }): Promise<IBriefing>;
   update(id: string, dto: UpdateBriefingDto): Promise<IBriefing | null>;

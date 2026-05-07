@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { BullModule } from '@nestjs/bullmq';
 import { ClsModule } from 'nestjs-cls';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { randomUUID } from 'crypto';
 import { Request } from 'express';
 
@@ -16,6 +16,7 @@ import { UsersModule } from './users/users.module';
 import { AgenciesModule } from './agencies/agencies.module';
 import { ClientsModule } from './clients/clients.module';
 import { PassengersModule } from './passengers/passengers.module';
+import { ViagensModule } from './viagens/viagens.module';
 import { PropostasModule } from './propostas/propostas.module';
 import { PropostaBlocksModule } from './proposta-blocks/proposta-blocks.module';
 import { BookingsModule } from './bookings/bookings.module';
@@ -81,6 +82,7 @@ const NODE_ENV = process.env.NODE_ENV ?? 'developer';
     AgenciesModule,
     ClientsModule,
     PassengersModule,
+    ViagensModule,
     PropostasModule,
     PropostaBlocksModule,
     BookingsModule,

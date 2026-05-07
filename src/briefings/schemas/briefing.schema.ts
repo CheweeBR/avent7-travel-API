@@ -10,8 +10,11 @@ export class Briefing {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Agency', required: true })
   agencyId: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Passenger', required: true })
-  passengerId: mongoose.Types.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Viagem', required: true })
+  viagemId: mongoose.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Passenger', default: null })
+  passengerId: mongoose.Types.ObjectId | null;
 
   @Prop({ enum: BriefingStatus, default: BriefingStatus.DRAFT })
   status: BriefingStatus;
@@ -49,5 +52,5 @@ export class Briefing {
 
 export const BriefingSchema = SchemaFactory.createForClass(Briefing);
 BriefingSchema.index({ agencyId: 1 });
-BriefingSchema.index({ passengerId: 1 });
+BriefingSchema.index({ viagemId: 1 });
 BriefingSchema.index({ status: 1 });

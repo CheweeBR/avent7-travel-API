@@ -3,8 +3,7 @@ import { PropostaStatus } from '../enums/proposta.enum';
 export interface IProposta {
   id: string;
   agencyId: string;
-  passengerId: string;
-  briefingId: string | null;
+  viagemId: string;
   propostaCode: string;
   title: string | null;
   status: PropostaStatus;

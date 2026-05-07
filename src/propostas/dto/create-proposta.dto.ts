@@ -4,12 +4,7 @@ import { IsMongoId, IsOptional, IsString } from 'class-validator';
 export class CreatePropostaDto {
   @ApiProperty()
   @IsMongoId()
-  passengerId: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsMongoId()
-  briefingId?: string;
+  viagemId: string;
 
   @ApiPropertyOptional()
   @IsOptional()

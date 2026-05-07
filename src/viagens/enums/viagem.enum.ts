@@ -1,4 +1,4 @@
-export enum ItineraryStatus {
+export enum ViagemStatus {
   DRAFT = 'draft',
   SENT_TO_CLIENT = 'sent_to_client',
   REVISION_REQUESTED = 'revision_requested',

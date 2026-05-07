@@ -29,11 +29,11 @@ export class PropostasController {
   @Get()
   @Auth()
   @ApiOperation({ summary: 'List all propostas' })
-  @ApiQuery({ name: 'passengerId', required: false })
-  findAll(@Query('passengerId') passengerId?: string) {
+  @ApiQuery({ name: 'viagemId', required: false })
+  findAll(@Query('viagemId') viagemId?: string) {
     const agencyId = this.requestContext.getAgencyId();
-    if (passengerId) {
-      return this.propostasService.findByPassenger(agencyId!, passengerId);
+    if (viagemId) {
+      return this.propostasService.findByViagem(agencyId!, viagemId);
     }
     return this.propostasService.findAll(agencyId!);
   }

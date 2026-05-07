@@ -14,8 +14,8 @@ export class BriefingsService {
     return this.repo.findAll(agencyId);
   }
 
-  async findByPassenger(agencyId: string, passengerId: string): Promise<IBriefing[]> {
-    return this.repo.findByPassenger(agencyId, passengerId);
+  async findByViagem(agencyId: string, viagemId: string): Promise<IBriefing[]> {
+    return this.repo.findByViagem(agencyId, viagemId);
   }
 
   async findById(id: string): Promise<IBriefing> {

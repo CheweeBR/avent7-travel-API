@@ -19,8 +19,8 @@ export class PropostasService {
     return this.repo.findAll(agencyId);
   }
 
-  async findByPassenger(agencyId: string, passengerId: string): Promise<IProposta[]> {
-    return this.repo.findByPassenger(agencyId, passengerId);
+  async findByViagem(agencyId: string, viagemId: string): Promise<IProposta[]> {
+    return this.repo.findByViagem(agencyId, viagemId);
   }
 
   async findById(id: string): Promise<IProposta> {

@@ -3,7 +3,8 @@ import { BriefingStatus, TripStyle, TripType } from '../enums/briefing.enum';
 export interface IBriefing {
   id: string;
   agencyId: string;
-  passengerId: string;
+  viagemId: string;
+  passengerId: string | null;
   status: BriefingStatus;
   tripType: TripType;
   tripStyle: TripStyle;

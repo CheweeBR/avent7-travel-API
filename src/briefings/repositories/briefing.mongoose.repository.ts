@@ -20,7 +20,8 @@ export class BriefingMongooseRepository implements IBriefingRepository {
     return {
       id: doc._id.toString(),
       agencyId: doc.agencyId?.toString() ?? '',
-      passengerId: doc.passengerId?.toString() ?? '',
+      viagemId: doc.viagemId?.toString() ?? '',
+      passengerId: doc.passengerId?.toString() ?? null,
       status: doc.status as BriefingStatus,
       tripType: doc.tripType as TripType,
       tripStyle: doc.tripStyle as TripStyle,
@@ -45,11 +46,11 @@ export class BriefingMongooseRepository implements IBriefingRepository {
     return docs.map((d) => this.toI(d));
   }
 
-  async findByPassenger(agencyId: string, passengerId: string): Promise<IBriefing[]> {
+  async findByViagem(agencyId: string, viagemId: string): Promise<IBriefing[]> {
     const docs = await this.model
       .find({
         agencyId: new Types.ObjectId(agencyId),
-        passengerId: new Types.ObjectId(passengerId),
+        viagemId: new Types.ObjectId(viagemId),
       })
       .sort({ createdAt: -1 })
       .lean<MongoBrf[]>();
@@ -65,7 +66,8 @@ export class BriefingMongooseRepository implements IBriefingRepository {
     const created = await this.model.create({
       ...dto,
       agencyId: new Types.ObjectId(dto.agencyId),
-      passengerId: new Types.ObjectId(dto.passengerId),
+      viagemId: new Types.ObjectId(dto.viagemId),
+      passengerId: dto.passengerId ? new Types.ObjectId(dto.passengerId) : null,
     });
     const doc = await this.model.findById(created._id).lean<MongoBrf>();
     return this.toI(doc!);

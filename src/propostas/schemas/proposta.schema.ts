@@ -10,11 +10,8 @@ export class Proposta {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Agency', required: true })
   agencyId: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Passenger', required: true })
-  passengerId: mongoose.Types.ObjectId;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Briefing', default: null })
-  briefingId: mongoose.Types.ObjectId | null;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Viagem', required: true })
+  viagemId: mongoose.Types.ObjectId;
 
   @Prop({ required: true, unique: true, trim: true })
   propostaCode: string;
@@ -67,5 +64,5 @@ export class Proposta {
 
 export const PropostaSchema = SchemaFactory.createForClass(Proposta);
 PropostaSchema.index({ agencyId: 1 });
-PropostaSchema.index({ passengerId: 1 });
+PropostaSchema.index({ viagemId: 1 });
 PropostaSchema.index({ status: 1 });

@@ -10,7 +10,8 @@ async function bootstrap() {
   // ─── CORS ─────────────────────────────────────────────────────────────────
   app.enableCors({
     origin: [
-      'http://localhost:3055', // Avent7-Prive-V2 frontend
+      'http://localhost:3055',
+      'http://localhost:3056',
       'http://localhost:3000',
     ],
     credentials: true,

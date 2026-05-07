@@ -5,7 +5,12 @@ import { TripStyle, TripType } from '../enums/briefing.enum';
 export class CreateBriefingDto {
   @ApiProperty()
   @IsMongoId()
-  passengerId: string;
+  viagemId: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsMongoId()
+  passengerId?: string;
 
   @ApiProperty({ enum: TripType })
   @IsEnum(TripType)
