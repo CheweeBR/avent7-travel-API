@@ -26,13 +26,16 @@ export class Proposta {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Viagem', required: true })
   viagemId: mongoose.Types.ObjectId;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Briefing', default: null })
+  briefingId: mongoose.Types.ObjectId | null;
+
   @Prop({ required: true, unique: true, trim: true })
   propostaCode: string;
 
   @Prop({ default: null })
   title: string | null;
 
-  @Prop({ enum: PropostaStatus, default: PropostaStatus.DRAFT })
+  @Prop({ enum: PropostaStatus, default: PropostaStatus.PENDING })
   status: PropostaStatus;
 
   @Prop({ default: null })
@@ -81,4 +84,3 @@ export class Proposta {
 export const PropostaSchema = SchemaFactory.createForClass(Proposta);
 PropostaSchema.index({ agencyId: 1 });
 PropostaSchema.index({ viagemId: 1 });
-PropostaSchema.index({ status: 1 });

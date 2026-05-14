@@ -26,6 +26,7 @@ type MongoBlockSub = {
 
 type MongoProposta = Proposta & {
   _id: Types.ObjectId;
+  briefingId?: Types.ObjectId;
   blocks: MongoBlockSub[];
   createdAt: Date;
   updatedAt: Date;
@@ -69,6 +70,7 @@ export class PropostaMongooseRepository implements IPropostaRepository {
       id: propostaId,
       agencyId: doc.agencyId?.toString() ?? '',
       viagemId: doc.viagemId?.toString() ?? '',
+      briefingId: doc.briefingId?.toString() ?? null,
       propostaCode: doc.propostaCode,
       title: doc.title ?? null,
       status: doc.status as PropostaStatus,

@@ -5,6 +5,7 @@ export interface IProposta {
   id: string;
   agencyId: string;
   viagemId: string;
+  briefingId: string | null;
   propostaCode: string;
   title: string | null;
   status: PropostaStatus;

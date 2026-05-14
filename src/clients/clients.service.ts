@@ -1,17 +1,21 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import * as sharp from 'sharp';
 import { IClientRepository, CLIENT_REPOSITORY } from './interfaces/client.repository.interface';
 import { IClient } from './interfaces/client.interface';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { S3Service } from '../storage/s3.service';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @Inject(CLIENT_REPOSITORY) private readonly repo: IClientRepository,
+    private readonly s3: S3Service,
   ) {}
 
   private generateClientCode(): string {
@@ -43,5 +47,24 @@ export class ClientsService {
   async remove(id: string): Promise<void> {
     const deleted = await this.repo.remove(id);
     if (!deleted) throw new NotFoundException('Cliente não encontrado.');
+  }
+
+  async uploadPhoto(id: string, file: Express.Multer.File): Promise<IClient> {
+    if (!file?.buffer?.length) throw new BadRequestException('Nenhum arquivo enviado.');
+    if (!file.mimetype.startsWith('image/')) throw new BadRequestException('Arquivo deve ser uma imagem.');
+
+    const webp = await (sharp as any)(file.buffer)
+      .rotate()
+      .resize(512, 512, { fit: 'cover' })
+      .webp({ quality: 86 })
+      .toBuffer();
+
+    const key = `avatars/clientes/${id}.webp`;
+    const url = await this.s3.uploadFile(key, webp, 'image/webp');
+    const photoUrl = `${url}?v=${Date.now()}`;
+
+    const updated = await this.repo.update(id, { photoUrl });
+    if (!updated) throw new NotFoundException('Cliente não encontrado.');
+    return updated;
   }
 }

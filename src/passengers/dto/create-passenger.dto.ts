@@ -51,4 +51,9 @@ export class CreatePassengerDto {
   @IsOptional()
   @IsObject()
   emergencyContact?: Record<string, string>;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  photoUrl?: string;
 }

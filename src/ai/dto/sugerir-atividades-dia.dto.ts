@@ -1,0 +1,47 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+
+export class SugerirAtividadesDiaDto {
+  @ApiProperty({ example: 'Passeios culturais em Roma: museus, coliseu, jantar típico italiano' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(500)
+  hint: string;
+
+  @ApiPropertyOptional({ example: '2025-07-12' })
+  @IsOptional()
+  @IsString()
+  date?: string;
+
+  @ApiPropertyOptional({ example: 2 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  passengers?: number;
+
+  @ApiPropertyOptional({ example: 'Toscana Romântica 7 dias' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  propostaTitle?: string;
+
+  @ApiPropertyOptional({ example: '2025-07-18' })
+  @IsOptional()
+  @IsString()
+  endDate?: string;
+
+  @ApiPropertyOptional({ example: 7 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  totalNights?: number;
+
+  @ApiPropertyOptional({ example: 'Dia 1: Hospedagem no Villa Medici\nDia 2: Experiência no Coliseu' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  contextSummary?: string;
+}

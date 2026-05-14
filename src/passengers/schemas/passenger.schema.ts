@@ -53,6 +53,9 @@ export class Passenger {
     phone?: string;
   };
 
+  @Prop({ default: null })
+  photoUrl: string | null;
+
   @Prop({ default: true })
   isActive: boolean;
 }

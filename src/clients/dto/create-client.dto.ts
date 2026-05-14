@@ -36,10 +36,16 @@ export class CreateClientDto {
   @IsEmail()
   emailPrimary: string;
 
-  @ApiProperty({ type: PrimaryDocumentDto })
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  photoUrl?: string;
+
+  @ApiPropertyOptional({ type: PrimaryDocumentDto })
+  @IsOptional()
   @ValidateNested()
   @Type(() => PrimaryDocumentDto)
-  primaryDocument: PrimaryDocumentDto;
+  primaryDocument?: PrimaryDocumentDto;
 
   @ApiPropertyOptional({ enum: ClientSegment })
   @IsOptional()

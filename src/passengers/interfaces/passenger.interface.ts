@@ -17,6 +17,7 @@ export interface IPassenger {
   };
   travelPreferences: Record<string, any>;
   emergencyContact: Record<string, string | undefined>;
+  photoUrl: string | null;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

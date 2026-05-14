@@ -17,4 +17,9 @@ export class UpdateViagemDto {
   @IsOptional()
   @IsMongoId()
   passengerId?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  coverImageUrl?: string;
 }

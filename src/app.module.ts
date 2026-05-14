@@ -8,6 +8,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { randomUUID } from 'crypto';
 import { Request } from 'express';
 
+import { StorageModule } from './storage/storage.module';
+import { UploadModule } from './upload/upload.module';
 import { CommonModule } from './common/common.module';
 import { RedisModule } from './redis/redis.module';
 import { LogModule } from './logs/log.module';
@@ -22,6 +24,8 @@ import { PropostaBlocksModule } from './proposta-blocks/proposta-blocks.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { BriefingsModule } from './briefings/briefings.module';
 import { BriefingTemplatesModule } from './briefing-templates/briefing-templates.module';
+import { ImagesModule } from './images/images.module';
+import { AiModule } from './ai/ai.module';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 const NODE_ENV = process.env.NODE_ENV ?? 'developer';
@@ -74,6 +78,8 @@ const NODE_ENV = process.env.NODE_ENV ?? 'developer';
     }),
 
     // ─── Global modules ───────────────────────────────────────────────────────
+    StorageModule,
+    UploadModule,
     RedisModule,
     CommonModule,
     LogModule,
@@ -90,6 +96,8 @@ const NODE_ENV = process.env.NODE_ENV ?? 'developer';
     BookingsModule,
     BriefingsModule,
     BriefingTemplatesModule,
+    ImagesModule,
+    AiModule,
   ],
 
   providers: [

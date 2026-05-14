@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsMongoId, IsNumber, IsOptional, IsString } from 'class-validator';
 import { PropostaStatus } from '../enums/proposta.enum';
 
 export class UpdatePropostaDto {
@@ -7,6 +7,11 @@ export class UpdatePropostaDto {
   @IsOptional()
   @IsString()
   title?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsMongoId()
+  briefingId?: string;
 
   @ApiPropertyOptional({ enum: PropostaStatus })
   @IsOptional()

@@ -7,8 +7,12 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -32,6 +36,17 @@ export class UsersController {
   getMe() {
     const userId = this.requestContext.getUserId();
     return this.usersService.findById(userId!);
+  }
+
+  @Post('me/avatar')
+  @Auth()
+  @UseInterceptors(FileInterceptor('file', { storage: memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } }))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @ApiOperation({ summary: 'Upload profile photo' })
+  uploadAvatar(@UploadedFile() file: Express.Multer.File) {
+    const userId = this.requestContext.getUserId();
+    return this.usersService.uploadAvatar(userId!, file);
   }
 
   @Get()

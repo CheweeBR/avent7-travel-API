@@ -29,6 +29,7 @@ export class PassengerMongooseRepository implements IPassengerRepository {
       documents: doc.documents ?? {},
       travelPreferences: doc.travelPreferences ?? {},
       emergencyContact: doc.emergencyContact ?? {},
+      photoUrl: doc.photoUrl ?? null,
       isActive: doc.isActive,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,

@@ -27,6 +27,9 @@ export class Viagem {
 
   @Prop({ enum: ViagemStatus, default: ViagemStatus.DRAFT })
   status: ViagemStatus;
+
+  @Prop({ type: String, default: null })
+  coverImageUrl: string | null;
 }
 
 export const ViagemSchema = SchemaFactory.createForClass(Viagem);
