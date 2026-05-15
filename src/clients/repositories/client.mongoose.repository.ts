@@ -45,6 +45,8 @@ export class ClientMongooseRepository implements IClientRepository {
         : null,
       travelPreferences: doc.travelPreferences ?? {},
       isActive: doc.isActive,
+      tripCount: doc.tripCount ?? 0,
+      passengerCount: doc.passengerCount ?? 0,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };
@@ -87,5 +89,9 @@ export class ClientMongooseRepository implements IClientRepository {
   async remove(id: string): Promise<boolean> {
     const result = await this.model.findByIdAndDelete(id);
     return !!result;
+  }
+
+  async incrementCount(id: string, field: 'tripCount' | 'passengerCount', delta: 1 | -1): Promise<void> {
+    await this.model.findByIdAndUpdate(id, { $inc: { [field]: delta } });
   }
 }

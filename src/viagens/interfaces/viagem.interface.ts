@@ -9,6 +9,7 @@ export interface IViagem {
   viagemCode: string;
   title: string;
   status: ViagemStatus;
+  coverImageUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,13 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import { IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class SugerirAtividadesDiaDto {
-  @ApiProperty({ example: 'Passeios culturais em Roma: museus, coliseu, jantar típico italiano' })
+  @ApiPropertyOptional({ example: 'Passeios culturais em Roma: museus, coliseu, jantar típico italiano' })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @MaxLength(500)
-  hint: string;
+  hint?: string;
 
   @ApiPropertyOptional({ example: '2025-07-12' })
   @IsOptional()

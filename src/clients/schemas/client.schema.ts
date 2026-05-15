@@ -89,6 +89,12 @@ export class Client {
 
   @Prop({ default: true })
   isActive: boolean;
+
+  @Prop({ default: 0 })
+  tripCount: number;
+
+  @Prop({ default: 0 })
+  passengerCount: number;
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

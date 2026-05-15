@@ -8,7 +8,10 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ViagensService } from './viagens.service';
 import { CreateViagemDto } from './dto/create-viagem.dto';
@@ -66,6 +69,17 @@ export class ViagensController {
   @ApiOperation({ summary: 'Update viagem' })
   update(@Param('id') id: string, @Body() dto: UpdateViagemDto) {
     return this.viagensService.update(id, dto);
+  }
+
+  @Post(':id/cover')
+  @Auth()
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Upload viagem cover image' })
+  uploadCover(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.viagensService.uploadCover(id, file);
   }
 
   @Delete(':id')

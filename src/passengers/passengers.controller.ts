@@ -32,10 +32,12 @@ export class PassengersController {
 
   @Get()
   @Auth()
-  @ApiQuery({ name: 'clientId', required: true })
-  @ApiOperation({ summary: 'List passengers of a client' })
-  findByClientId(@Query('clientId') clientId: string) {
-    return this.passengersService.findByClientId(clientId);
+  @ApiQuery({ name: 'clientId', required: false })
+  @ApiOperation({ summary: 'List passengers — all in agency or filtered by client' })
+  find(@Query('clientId') clientId?: string) {
+    if (clientId) return this.passengersService.findByClientId(clientId);
+    const agencyId = this.requestContext.getAgencyId();
+    return this.passengersService.findAll(agencyId!);
   }
 
   @Get(':id')

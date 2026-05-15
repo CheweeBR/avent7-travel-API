@@ -10,13 +10,19 @@ import { IPassenger } from './interfaces/passenger.interface';
 import { CreatePassengerDto } from './dto/create-passenger.dto';
 import { UpdatePassengerDto } from './dto/update-passenger.dto';
 import { S3Service } from '../storage/s3.service';
+import { ClientsService } from '../clients/clients.service';
 
 @Injectable()
 export class PassengersService {
   constructor(
     @Inject(PASSENGER_REPOSITORY) private readonly repo: IPassengerRepository,
     private readonly s3: S3Service,
+    private readonly clientsService: ClientsService,
   ) {}
+
+  async findAll(agencyId: string): Promise<IPassenger[]> {
+    return this.repo.findAll(agencyId);
+  }
 
   async findByClientId(clientId: string): Promise<IPassenger[]> {
     return this.repo.findByClientId(clientId);
@@ -29,7 +35,9 @@ export class PassengersService {
   }
 
   async create(dto: CreatePassengerDto, agencyId: string): Promise<IPassenger> {
-    return this.repo.create({ ...dto, agencyId });
+    const passenger = await this.repo.create({ ...dto, agencyId });
+    await this.clientsService.incrementPassengerCount(dto.clientId, 1);
+    return passenger;
   }
 
   async update(id: string, dto: UpdatePassengerDto): Promise<IPassenger> {
@@ -39,8 +47,10 @@ export class PassengersService {
   }
 
   async remove(id: string): Promise<void> {
+    const passenger = await this.findById(id);
     const deleted = await this.repo.remove(id);
     if (!deleted) throw new NotFoundException('Passageiro não encontrado.');
+    await this.clientsService.incrementPassengerCount(passenger.clientId, -1);
   }
 
   async uploadPhoto(id: string, file: Express.Multer.File): Promise<IPassenger> {

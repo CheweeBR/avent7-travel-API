@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsIn, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import { IsIn, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class SugerirBlocoDto {
@@ -8,11 +8,11 @@ export class SugerirBlocoDto {
   @IsIn(['aereo', 'hospedagem', 'transporte', 'experiencia', 'restaurante'])
   blockType: string;
 
-  @ApiProperty({ example: 'Hotel boutique 5 estrelas perto do Coliseu, em Roma' })
+  @ApiPropertyOptional({ example: 'Hotel boutique 5 estrelas perto do Coliseu, em Roma' })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @MaxLength(500)
-  hint: string;
+  hint?: string;
 
   @ApiPropertyOptional({ example: '2025-07-12' })
   @IsOptional()

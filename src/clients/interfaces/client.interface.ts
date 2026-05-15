@@ -28,6 +28,8 @@ export interface IClient {
   primaryDocument: IPrimaryDocument | null;
   travelPreferences: Record<string, any>;
   isActive: boolean;
+  tripCount: number;
+  passengerCount: number;
   createdAt: Date;
   updatedAt: Date;
 }

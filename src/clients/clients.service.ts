@@ -49,6 +49,14 @@ export class ClientsService {
     if (!deleted) throw new NotFoundException('Cliente não encontrado.');
   }
 
+  async incrementTripCount(clientId: string, delta: 1 | -1): Promise<void> {
+    await this.repo.incrementCount(clientId, 'tripCount', delta);
+  }
+
+  async incrementPassengerCount(clientId: string, delta: 1 | -1): Promise<void> {
+    await this.repo.incrementCount(clientId, 'passengerCount', delta);
+  }
+
   async uploadPhoto(id: string, file: Express.Multer.File): Promise<IClient> {
     if (!file?.buffer?.length) throw new BadRequestException('Nenhum arquivo enviado.');
     if (!file.mimetype.startsWith('image/')) throw new BadRequestException('Arquivo deve ser uma imagem.');

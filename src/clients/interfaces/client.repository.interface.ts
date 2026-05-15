@@ -11,4 +11,5 @@ export interface IClientRepository {
   create(dto: CreateClientDto & { agencyId: string; clientCode: string }): Promise<IClient>;
   update(id: string, dto: UpdateClientDto): Promise<IClient | null>;
   remove(id: string): Promise<boolean>;
+  incrementCount(id: string, field: 'tripCount' | 'passengerCount', delta: 1 | -1): Promise<void>;
 }

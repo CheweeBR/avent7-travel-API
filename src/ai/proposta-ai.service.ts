@@ -34,6 +34,8 @@ Retorne APENAS JSON válido, sem blocos de markdown, sem texto fora do JSON.
 Todos os textos em Português do Brasil.
 Omita campos que não puder preencher com informação real ou confiável.`;
 
+const BLOCK_TYPES_WITH_WEB_SEARCH = new Set(['hospedagem', 'restaurante', 'experiencia']);
+
 const BLOCK_SYSTEM_PROMPTS: Record<string, string> = {
   hospedagem: `${SYSTEM_BASE}
 Pesquise na internet e sugira dados reais para um bloco de HOSPEDAGEM.
@@ -82,7 +84,7 @@ Retorne JSON com os campos disponíveis:
 }`,
 
   transporte: `${SYSTEM_BASE}
-Pesquise na internet e sugira dados para um bloco de TRANSPORTE / TRASLADO.
+Sugira dados para um bloco de TRANSPORTE / TRASLADO.
 Retorne JSON com os campos disponíveis:
 {
   "title": "descrição do traslado (ex: Transfer Aeroporto → Hotel Centro)",
@@ -119,12 +121,13 @@ Retorne JSON com os campos disponíveis:
 };
 
 const DAY_ACTIVITIES_SYSTEM = `${SYSTEM_BASE}
-Pesquise na internet e sugira um programa completo e variado para o dia descrito.
+Pesquise na internet e sugira atividades e refeições para o dia descrito.
+IMPORTANT: retorne APENAS blockTypes "experiencia" ou "restaurante". Nunca sugira transfers, hospedagem ou voos.
 Retorne JSON no formato:
 {
   "suggestions": [
     {
-      "blockType": "experiencia | restaurante | transporte | hospedagem",
+      "blockType": "experiencia | restaurante",
       "blockData": {
         "title": "nome real",
         "location": "endereço ou local",
@@ -136,8 +139,7 @@ Retorne JSON no formato:
     }
   ]
 }
-Retorne entre 3 e 5 sugestões variadas com blockTypes diferentes conforme o contexto do dia.
-Priorize experiências locais autênticas e restaurantes típicos da região.`;
+Retorne entre 3 e 5 sugestões alternando entre experiências locais autênticas e restaurantes típicos da região.`;
 
 // ─── Service ───────────────────────────────────────────────────────────────────
 
@@ -172,36 +174,33 @@ export class PropostaAiService {
 
   async sugerirBloco(dto: SugerirBlocoDto): Promise<{ blockData: AiBlockData }> {
     const systemPrompt = BLOCK_SYSTEM_PROMPTS[dto.blockType] ?? BLOCK_SYSTEM_PROMPTS['experiencia'];
+    const fullPrompt = `${systemPrompt}\n\n---\n\n${this.buildContextLines(dto, 'Data do bloco').join('\n')}`;
 
-    const contextLines: string[] = [`Pedido do consultor: ${dto.hint}`];
-    if (dto.date)           contextLines.push(`Data do bloco: ${dto.date}`);
-    if (dto.passengers)     contextLines.push(`Passageiros: ${dto.passengers}`);
-    if (dto.propostaTitle)  contextLines.push(`Proposta / destino: ${dto.propostaTitle}`);
-    if (dto.endDate)        contextLines.push(`Período da viagem: ${dto.date ?? ''} a ${dto.endDate}`);
-    if (dto.totalNights)    contextLines.push(`Total de noites da viagem: ${dto.totalNights}`);
-    if (dto.contextSummary) contextLines.push(`Itinerário atual:\n${dto.contextSummary}`);
-
-    const fullPrompt = `${systemPrompt}\n\n---\n\n${contextLines.join('\n')}`;
-
-    const { reply } = await this.aiService.generateWithWebSearch(fullPrompt);
+    const { reply } = BLOCK_TYPES_WITH_WEB_SEARCH.has(dto.blockType)
+      ? await this.aiService.generateWithWebSearch(fullPrompt)
+      : await this.aiService.generate(fullPrompt);
     const blockData = this.parseJson<AiBlockData>(reply, {});
     return { blockData };
   }
 
   async sugerirAtividadesDia(dto: SugerirAtividadesDiaDto): Promise<{ suggestions: AiBlockSuggestion[] }> {
-    const contextLines: string[] = [`Pedido do consultor: ${dto.hint}`];
-    if (dto.date)           contextLines.push(`Data do dia: ${dto.date}`);
-    if (dto.passengers)     contextLines.push(`Passageiros: ${dto.passengers}`);
-    if (dto.propostaTitle)  contextLines.push(`Proposta / destino: ${dto.propostaTitle}`);
-    if (dto.endDate)        contextLines.push(`Período da viagem: ${dto.date ?? ''} a ${dto.endDate}`);
-    if (dto.totalNights)    contextLines.push(`Total de noites da viagem: ${dto.totalNights}`);
-    if (dto.contextSummary) contextLines.push(`Itinerário atual:\n${dto.contextSummary}`);
-
-    const fullPrompt = `${DAY_ACTIVITIES_SYSTEM}\n\n---\n\n${contextLines.join('\n')}`;
+    const fullPrompt = `${DAY_ACTIVITIES_SYSTEM}\n\n---\n\n${this.buildContextLines(dto, 'Data do dia').join('\n')}`;
 
     const { reply } = await this.aiService.generateWithWebSearch(fullPrompt);
     const parsed = this.parseJson<{ suggestions: AiBlockSuggestion[] }>(reply, { suggestions: [] });
     return { suggestions: parsed.suggestions ?? [] };
+  }
+
+  private buildContextLines(dto: SugerirBlocoDto | SugerirAtividadesDiaDto, dateLabel: string): string[] {
+    const lines: string[] = [];
+    if (dto.propostaTitle)  lines.push(`Proposta / destino: ${dto.propostaTitle}`);
+    if (dto.hint)           lines.push(`Instrução adicional: ${dto.hint}`);
+    if (dto.date)           lines.push(`${dateLabel}: ${dto.date}`);
+    if (dto.passengers)     lines.push(`Passageiros: ${dto.passengers}`);
+    if (dto.endDate)        lines.push(`Período da viagem: ${dto.date ?? ''} a ${dto.endDate}`);
+    if (dto.totalNights)    lines.push(`Total de noites da viagem: ${dto.totalNights}`);
+    if (dto.contextSummary) lines.push(`Itinerário atual:\n${dto.contextSummary}`);
+    return lines;
   }
 
   private parseJson<T>(reply: string, fallback: T): T {

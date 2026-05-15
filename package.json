@@ -11,7 +11,8 @@
     "start:prod": "NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "seed:admin": "ts-node -P tsconfig.seed.json src/seeds/seed-admin.ts",
-    "seed:briefing-template": "ts-node -P tsconfig.seed.json src/seeds/seed-briefing-template.ts"
+    "seed:briefing-template": "ts-node -P tsconfig.seed.json src/seeds/seed-briefing-template.ts",
+    "seed:sync-client-counts": "ts-node -P tsconfig.seed.json src/seeds/seed-sync-client-counts.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1045.0",

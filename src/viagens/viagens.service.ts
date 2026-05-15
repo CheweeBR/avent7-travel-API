@@ -1,15 +1,20 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import * as sharp from 'sharp';
 import { VIAGEM_REPOSITORY, IViagemRepository } from './interfaces/viagem.repository.interface';
 import { IViagem } from './interfaces/viagem.interface';
 import { CreateViagemDto } from './dto/create-viagem.dto';
 import { UpdateViagemDto } from './dto/update-viagem.dto';
 import { ViagemQueryDto } from './dto/viagem-query.dto';
 import { PagedResult } from '../common/types/paged-result.type';
+import { ClientsService } from '../clients/clients.service';
+import { S3Service } from '../storage/s3.service';
 
 @Injectable()
 export class ViagensService {
   constructor(
     @Inject(VIAGEM_REPOSITORY) private readonly repo: IViagemRepository,
+    private readonly clientsService: ClientsService,
+    private readonly s3: S3Service,
   ) {}
 
   private generateCode(): string {
@@ -37,7 +42,9 @@ export class ViagensService {
 
   async create(dto: CreateViagemDto, agencyId: string, userId: string | null): Promise<IViagem> {
     const viagemCode = this.generateCode();
-    return this.repo.create({ ...dto, agencyId, viagemCode, createdByUserId: userId });
+    const viagem = await this.repo.create({ ...dto, agencyId, viagemCode, createdByUserId: userId });
+    await this.clientsService.incrementTripCount(dto.clientId, 1);
+    return viagem;
   }
 
   async update(id: string, dto: UpdateViagemDto): Promise<IViagem> {
@@ -47,7 +54,28 @@ export class ViagensService {
   }
 
   async remove(id: string): Promise<void> {
+    const viagem = await this.findById(id);
     const deleted = await this.repo.remove(id);
     if (!deleted) throw new NotFoundException('Viagem não encontrada.');
+    await this.clientsService.incrementTripCount(viagem.clientId, -1);
+  }
+
+  async uploadCover(id: string, file: Express.Multer.File): Promise<IViagem> {
+    if (!file?.buffer?.length) throw new BadRequestException('Nenhum arquivo enviado.');
+    if (!file.mimetype.startsWith('image/')) throw new BadRequestException('Arquivo deve ser uma imagem.');
+
+    const webp = await (sharp as any)(file.buffer)
+      .rotate()
+      .resize(1200, 630, { fit: 'cover' })
+      .webp({ quality: 88 })
+      .toBuffer();
+
+    const key = `viagens/covers/${id}.webp`;
+    const url = await this.s3.uploadFile(key, webp, 'image/webp');
+    const coverImageUrl = `${url}?v=${Date.now()}`;
+
+    const updated = await this.repo.update(id, { coverImageUrl });
+    if (!updated) throw new NotFoundException('Viagem não encontrada.');
+    return updated;
   }
 }

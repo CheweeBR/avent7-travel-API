@@ -28,6 +28,7 @@ export class ViagemMongooseRepository implements IViagemRepository {
       viagemCode: doc.viagemCode,
       title: doc.title,
       status: doc.status as ViagemStatus,
+      coverImageUrl: (doc as any).coverImageUrl ?? null,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };
