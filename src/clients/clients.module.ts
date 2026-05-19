@@ -5,9 +5,13 @@ import { ClientsService } from './clients.service';
 import { ClientsController } from './clients.controller';
 import { ClientMongooseRepository } from './repositories/client.mongoose.repository';
 import { CLIENT_REPOSITORY } from './interfaces/client.repository.interface';
+import { ClientSegmentsModule } from '../client-segments/client-segments.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }]),
+    ClientSegmentsModule,
+  ],
   controllers: [ClientsController],
   providers: [
     ClientsService,

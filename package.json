@@ -5,14 +5,14 @@
   "scripts": {
     "build": "nest build",
     "start": "node dist/main",
-    "start:dev": "NODE_ENV=developer nest start --watch",
-    "start:dev:win": "cross-env NODE_ENV=developer nest start --watch",
+    "start:dev": "nest start --watch",
     "dev": "nest start --watch",
-    "start:prod": "NODE_ENV=production node dist/main",
+    "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "seed:admin": "ts-node -P tsconfig.seed.json src/seeds/seed-admin.ts",
     "seed:briefing-template": "ts-node -P tsconfig.seed.json src/seeds/seed-briefing-template.ts",
-    "seed:sync-client-counts": "ts-node -P tsconfig.seed.json src/seeds/seed-sync-client-counts.ts"
+    "seed:sync-client-counts": "ts-node -P tsconfig.seed.json src/seeds/seed-sync-client-counts.ts",
+    "seed:migrate-client-segments": "ts-node -P tsconfig.seed.json src/seeds/seed-migrate-client-segments.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1045.0",

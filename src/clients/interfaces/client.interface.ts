@@ -1,9 +1,16 @@
-import { ClientSegment, DocumentType, Gender } from '../enums/client.enum';
+import { DocumentType, Gender } from '../enums/client.enum';
 
 export interface IPrimaryDocument {
   type: DocumentType;
   number: string;
   country: string;
+}
+
+export interface IClientSegmentRef {
+  id: string;
+  name: string;
+  icon: string;
+  color: string;
 }
 
 export interface IClient {
@@ -17,7 +24,8 @@ export interface IClient {
   nationality: string | null;
   profession: string | null;
   company: string | null;
-  segment: ClientSegment;
+  segmentId: string;
+  segment: IClientSegmentRef | null;
   photoUrl: string | null;
   emailPrimary: string;
   emailSecondary: string | null;

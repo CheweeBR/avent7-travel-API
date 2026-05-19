@@ -6,15 +6,6 @@ export enum DocumentType {
   OTHER = 'other',
 }
 
-export enum ClientSegment {
-  VIP = 'vip',
-  GOLD = 'gold',
-  SILVER = 'silver',
-  BRONZE = 'bronze',
-  CORPORATE = 'corporate',
-  LEISURE = 'leisure',
-}
-
 export enum Gender {
   FEMALE = 'female',
   MALE = 'male',

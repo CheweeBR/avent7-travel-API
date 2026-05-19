@@ -4,14 +4,14 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-// ─── Load .env.developer ──────────────────────────────────────────────────────
+// ─── Load .env ────────────────────────────────────────────────────────────────
 
-const envPath = path.resolve(__dirname, '../../.env.developer');
+const envPath = path.resolve(__dirname, '../../.env');
 dotenv.config({ path: envPath });
 
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
-  console.error('❌  MONGODB_URI não encontrado em .env.developer');
+  console.error('❌  MONGODB_URI não encontrado em .env');
   process.exit(1);
 }
 

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-dotenv.config({ path: path.resolve(__dirname, '../.env.developer') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 async function main() {
   const uri = process.env.MONGODB_URI;

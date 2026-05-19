@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AgenciesModule } from './agencies/agencies.module';
 import { ClientsModule } from './clients/clients.module';
+import { ClientSegmentsModule } from './client-segments/client-segments.module';
 import { PassengersModule } from './passengers/passengers.module';
 import { ViagensModule } from './viagens/viagens.module';
 import { PropostasModule } from './propostas/propostas.module';
@@ -28,14 +29,12 @@ import { ImagesModule } from './images/images.module';
 import { AiModule } from './ai/ai.module';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
-const NODE_ENV = process.env.NODE_ENV ?? 'developer';
-
 @Module({
   imports: [
     // ─── Config ───────────────────────────────────────────────────────────────
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: NODE_ENV === 'production' ? '.env.production' : '.env.developer',
+      envFilePath: '.env',
     }),
 
     // ─── CLS (Request context) ────────────────────────────────────────────────
@@ -89,6 +88,7 @@ const NODE_ENV = process.env.NODE_ENV ?? 'developer';
     UsersModule,
     AgenciesModule,
     ClientsModule,
+    ClientSegmentsModule,
     PassengersModule,
     ViagensModule,
     PropostasModule,

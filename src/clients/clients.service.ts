@@ -10,12 +10,14 @@ import { IClient } from './interfaces/client.interface';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { S3Service } from '../storage/s3.service';
+import { ClientSegmentsService } from '../client-segments/client-segments.service';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @Inject(CLIENT_REPOSITORY) private readonly repo: IClientRepository,
     private readonly s3: S3Service,
+    private readonly segmentsService: ClientSegmentsService,
   ) {}
 
   private generateClientCode(): string {
@@ -34,11 +36,17 @@ export class ClientsService {
   }
 
   async create(dto: CreateClientDto, agencyId: string): Promise<IClient> {
+    await this.segmentsService.assertBelongsToAgency(dto.segmentId, agencyId);
     const clientCode = this.generateClientCode();
     return this.repo.create({ ...dto, agencyId, clientCode });
   }
 
   async update(id: string, dto: UpdateClientDto): Promise<IClient> {
+    if (dto.segmentId) {
+      const existing = await this.repo.findById(id);
+      if (!existing) throw new NotFoundException('Cliente não encontrado.');
+      await this.segmentsService.assertBelongsToAgency(dto.segmentId, existing.agencyId);
+    }
     const updated = await this.repo.update(id, dto);
     if (!updated) throw new NotFoundException('Cliente não encontrado.');
     return updated;

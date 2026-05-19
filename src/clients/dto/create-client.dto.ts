@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
+  IsMongoId,
   IsObject,
   IsOptional,
   IsString,
@@ -9,7 +10,7 @@ import {
   IsNotEmpty,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ClientSegment, DocumentType, Gender } from '../enums/client.enum';
+import { DocumentType, Gender } from '../enums/client.enum';
 
 export class PrimaryDocumentDto {
   @ApiProperty({ enum: DocumentType })
@@ -47,10 +48,9 @@ export class CreateClientDto {
   @Type(() => PrimaryDocumentDto)
   primaryDocument?: PrimaryDocumentDto;
 
-  @ApiPropertyOptional({ enum: ClientSegment })
-  @IsOptional()
-  @IsEnum(ClientSegment)
-  segment?: ClientSegment;
+  @ApiProperty({ description: 'ObjectId do segmento (ClientSegment) ao qual o cliente pertence' })
+  @IsMongoId()
+  segmentId: string;
 
   @ApiPropertyOptional({ enum: Gender })
   @IsOptional()

@@ -4,11 +4,11 @@ import * as dotenv from 'dotenv';
 
 // ─── Env ──────────────────────────────────────────────────────────────────────
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env.developer') });
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
-  console.error('❌  MONGODB_URI não encontrado em .env.developer');
+  console.error('❌  MONGODB_URI não encontrado em .env');
   process.exit(1);
 }
 

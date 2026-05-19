@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { ClientSegment, DocumentType, Gender } from '../enums/client.enum';
+import { DocumentType, Gender } from '../enums/client.enum';
 
 export type ClientDocument = HydratedDocument<Client>;
 
@@ -34,8 +34,8 @@ export class Client {
   @Prop({ default: null })
   company: string | null;
 
-  @Prop({ enum: ClientSegment, default: ClientSegment.BRONZE })
-  segment: ClientSegment;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'ClientSegment', required: true, index: true })
+  segmentId: mongoose.Types.ObjectId;
 
   @Prop({ default: null })
   photoUrl: string | null;
@@ -100,3 +100,4 @@ export class Client {
 export const ClientSchema = SchemaFactory.createForClass(Client);
 ClientSchema.index({ agencyId: 1 });
 ClientSchema.index({ emailPrimary: 1 });
+ClientSchema.index({ segmentId: 1 });

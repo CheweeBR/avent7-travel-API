@@ -5,9 +5,13 @@ import { AgenciesService } from './agencies.service';
 import { AgenciesController } from './agencies.controller';
 import { AgencyMongooseRepository } from './repositories/agency.mongoose.repository';
 import { AGENCY_REPOSITORY } from './interfaces/agency.repository.interface';
+import { ClientSegmentsModule } from '../client-segments/client-segments.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Agency.name, schema: AgencySchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Agency.name, schema: AgencySchema }]),
+    ClientSegmentsModule,
+  ],
   controllers: [AgenciesController],
   providers: [
     AgenciesService,
